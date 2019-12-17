@@ -1,7 +1,7 @@
 const project = (args) => {
   const { title } = args;
   const { description } = args;
-  const  tasks  = [];
+  const tasks = [];
   const projectCompleted = () => {
     if (args.hasOwnProperty('completed')) {
       return args.completed
@@ -12,17 +12,17 @@ const project = (args) => {
         } else {
           args.completed = true;
         }
-        
+
       })
     }
     return args.completed
-}
-  const addTask = (task) => {
-     return tasks.push(task)
+  }
+  const addTask = (task, project) => {
+    return project.tasks.push(task)
   }
   const taskTitles = () => {
     let titles = tasks.map(obj => ({
-        title: obj.title()
+      title: obj.title()
     }));
     return JSON.stringify(titles);
   }
@@ -30,7 +30,7 @@ const project = (args) => {
   const deleteTask = (index) => {
     return delete tasks[index];
   }
-  
+
   return {
     title,
     description,
