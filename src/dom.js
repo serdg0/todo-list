@@ -8,7 +8,8 @@ const addTaskForm = (project) => {
     let container = document.getElementById('container');
     let title = document.createElement('input');
     newTask.title = title.value;
-    let submit = addButton(project);
+    let submit = addButton();
+    submit.onclick = project.addTask(newTask);
     container.appendChild(title);
     container.appendChild(submit);
 }
@@ -17,15 +18,18 @@ const displayProjects = (todoList) => {
     const container = document.createElement("div");
     const body = document.getElementsByTagName('body')[0];
     container.setAttribute('id', 'container');
-    todoList.list.forEach(project => {
+    body.appendChild(container);
+    Object.keys(todoList).forEach(key => {
+        let project = todoList[key];
+        console.log(project.title);
         let index = 0;
         let projectDiv = document.createElement('div');
         let title = document.createTextNode(`${project.title}`);
         let description = document.createTextNode(`${project.description}`);
         let taskContainer = document.createElement('div');
-        const taskForm = addTaskForm(project); 
+        addTaskForm(project);
         project.tasks.forEach(task => {
-            let taskTitle = document.createTextNode(`${task.title()}`);
+            let taskTitle = document.createTextNode(`${task.title}`);
             let taskCheckbox = document.createElement('input');
             let destroyButton = deleteButton(project, index);
             taskCheckbox.setAttribute('type', 'checkbox');
@@ -43,11 +47,9 @@ const displayProjects = (todoList) => {
         projectDiv.appendChild(title);
         projectDiv.appendChild(description);
         projectDiv.appendChild(taskContainer);
-        projectDiv.appendChild(taskForm);
         container.appendChild(projectDiv);
+        
     })
-    body.appendChild(container);
-    
 }
 
 const deleteButton = (project, index) => {
@@ -57,10 +59,10 @@ const deleteButton = (project, index) => {
     return deleteButton;
 }
 
-const addButton = (project) => {
+const addButton = () => {
     const addButton = document.createElement('button');
     addButton.innerHTML = 'New Task';
-    addButton.onclick = project.addTask(task);
+    return addButton;
 }
 
 
