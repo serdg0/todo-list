@@ -1,14 +1,14 @@
 const task = (args) => {
-    const title = () => {
-        return args.title
-    }
-    const completed = () => {
+    const { title } = args;
+    const completedFun = () => {
         return args.hasOwnProperty('completed') ? args.completed : false
     }
+
+    const completed = completedFun();
     
     return {
         title,
-        completed
+        completed,
     }
 }
 
