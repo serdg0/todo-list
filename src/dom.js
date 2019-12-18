@@ -33,11 +33,15 @@ const taskDivs = (obj) => {
     const taskTitle = document.createElement('div');
     const taskCompleted = document.createElement('div');
     const textTitle = document.createTextNode(`${task.title}`);
-    const textCompleted = document.createTextNode(`${task.completed}`);
+    const textCompleted = document.createElement('input');
+    textCompleted.setAttribute('type', 'checkbox');
+    textCompleted.setAttribute('id', `${task.title}`);
+    textCompleted.checked = task.completed;
+    //const textCompleted = document.createTextNode(`${task.completed}`);
     taskTitle.appendChild(textTitle);
     taskCompleted.appendChild(textCompleted);
     container.appendChild(taskTitle);
-    container.appendChild(task.completed);
+    container.appendChild(taskCompleted);
     taskArr.push(container);
   });
   return taskArr;

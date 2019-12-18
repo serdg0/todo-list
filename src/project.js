@@ -1,10 +1,8 @@
-import { arrayExpression } from "babel-types";
-
 const project = (args) => {
   const { title } = args;
   const { description } = args;
   var tasks = [];
-  
+
   const projectCompleted = () => {
     if (args.hasOwnProperty('completed')) {
       return args.completed
@@ -30,12 +28,12 @@ const project = (args) => {
   const mySelf = () => {
     let thisProj;
     Array.from(localStorage).forEach(string => {
-    let obj = JSON.parse(string);
-    if (obj.title === title) {
-      thisProj = obj;
-    }
-  })
-  return thisProj;
+      let obj = JSON.parse(string);
+      if (obj.title === title) {
+        thisProj = obj;
+      }
+    })
+    return thisProj;
   }
 
   const myIndex = () => {
