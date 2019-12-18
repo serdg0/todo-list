@@ -31,6 +31,9 @@ app.addProject(projectito);
 newProj.addTask(newTask);
 newProj.addTask(newTaskOn);
 projectito.addTask(taskito);
+newProj.addTask(task({
+    title: 'COMMIT IT DUDE'
+}))
 
 
 displayInt(app);

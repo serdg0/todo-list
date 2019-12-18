@@ -1,14 +1,11 @@
 const todoList = () => {
-  let list = window.localStorage;
+  let list = window.localStorage; //object
   let index = 0;
+  
   const addProject = (project) => {
     const projectText = JSON.stringify(project);
     list.setItem(index, projectText);
     index++;
-  }
-
-  const findProject = () => {
-    
   }
 
   const allProjects = JSON.parse(JSON.stringify(list));

@@ -1,3 +1,5 @@
+import { arrayExpression } from "babel-types";
+
 const project = (args) => {
   const { title } = args;
   const { description } = args;
@@ -19,13 +21,26 @@ const project = (args) => {
     return args.completed
   }
   const addTask = (task) => {
-    return tasks.push(task);
+    let index = myIndex();
+    let object = mySelf();
+    object.tasks.push(task);
+    localStorage[index] = JSON.stringify(object);
   }
-  const taskTitles = () => {
-    let titles = tasks.map(obj => ({
-      title: obj.title()
-    }));
-    return JSON.stringify(titles);
+
+  const mySelf = () => {
+    let thisProj;
+    Array.from(localStorage).forEach(string => {
+    let obj = JSON.parse(string);
+    if (obj.title === title) {
+      thisProj = obj;
+    }
+  })
+  return thisProj;
+  }
+
+  const myIndex = () => {
+    let obj = mySelf();
+    return Array.from(localStorage).indexOf(JSON.stringify(obj));
   }
 
   const deleteTask = (index) => {
@@ -37,7 +52,6 @@ const project = (args) => {
     description,
     tasks,
     addTask,
-    taskTitles,
     deleteTask,
     projectCompleted,
   };
