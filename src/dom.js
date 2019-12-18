@@ -4,7 +4,6 @@ import task from './task';
 //display all project, display tasks, add new project button, add delete button, project complete checkbox
 //task complete checkbox, form for project, form for task.
 const addTaskForm = (project) => {
-  let newTask = task({});
   let container = document.getElementById('container');
   let title = document.createElement('input');
   newTask.title = title.value;
@@ -14,42 +13,10 @@ const addTaskForm = (project) => {
   container.appendChild(submit);
 }
 
-const displayProjects = (todoList) => {
-  const container = document.createElement("div");
-  const body = document.getElementsByTagName('body')[0];
-  container.setAttribute('id', 'container');
-  body.appendChild(container);
-  Object.keys(todoList).forEach(key => {
-    let project = todoList[key];
-    console.log(project.title);
-    let index = 0;
-    let projectDiv = document.createElement('div');
-    let title = document.createTextNode(`${project.title}`);
-    let description = document.createTextNode(`${project.description}`);
-    let taskContainer = document.createElement('div');
-    addTaskForm(project);
-    project.tasks.forEach(task => {
-      let taskTitle = document.createTextNode(`${task.title}`);
-      let taskCheckbox = document.createElement('input');
-      let destroyButton = deleteButton(project, index);
-      taskCheckbox.setAttribute('type', 'checkbox');
-      taskCheckbox.checked = task.completed;
-      if (taskCheckbox.checked == true) {
-        task.completed = true;
-      } else {
-        task.completed = false;
-      }
-      taskContainer.appendChild(taskTitle);
-      taskContainer.appendChild(taskCheckbox);
-      taskContainer.appendChild(destroyButton);
-      index++;
-    })
-    projectDiv.appendChild(title);
-    projectDiv.appendChild(description);
-    projectDiv.appendChild(taskContainer);
-    container.appendChild(projectDiv);
-
-  })
+const addButton = () => {
+  const addButton = document.createElement('button');
+  addButton.innerHTML = 'New Task';
+  return addButton;
 }
 
 const deleteButton = (project, index) => {
@@ -59,11 +26,54 @@ const deleteButton = (project, index) => {
   return deleteButton;
 }
 
-const addButton = () => {
-  const addButton = document.createElement('button');
-  addButton.innerHTML = 'New Task';
-  return addButton;
+const taskDivs = (obj) => {
+  let taskArr = [];
+  obj.tasks.forEach(task => {
+    const container = document.createElement('div');
+    const taskTitle = document.createElement('div');
+    const taskCompleted = document.createElement('div');
+    const textTitle = document.createTextNode(`${task.title}`);
+    const textCompleted = document.createTextNode(`${task.completed}`);
+    taskTitle.appendChild(textTitle);
+    taskCompleted.appendChild(textCompleted);
+    container.appendChild(taskTitle);
+    container.appendChild(task.completed);
+    taskArr.push(container);
+  });
+  return taskArr;
 }
 
+const projectDivs = (todoList) => {
+  const hash = todoList.allProjects;
+  let projectArr = [];
+  for (let key in hash) {
+    const obj = JSON.parse(hash[key]);
+    const projectDiv = document.createElement('div');
+    const projectTitle = document.createElement('div');
+    const projectDescription = document.createElement('div');
+    const textTitle = document.createTextNode(`TITLE: ${obj.title}`);
+    const textDescription = document.createTextNode(`DESCRIPTION: ${obj.description}`);
+    const tasksDivisions = taskDivs(obj);
+    projectTitle.appendChild(textTitle);
+    projectDescription.appendChild(textDescription);
+    projectDiv.appendChild(projectTitle);
+    projectDiv.appendChild(projectDescription);
 
-export default displayProjects;
+    tasksDivisions.forEach(div => {
+      projectDiv.appendChild(div);
+    })
+
+    projectArr.push(projectDiv);
+  }
+  return projectArr;
+}
+
+const displayInt = (todoList) => {
+  const divs = projectDivs(todoList);
+  const body = document.getElementsByTagName('body')[0];
+  divs.forEach(project => {
+    body.appendChild(project);
+  })
+}
+
+export default displayInt;

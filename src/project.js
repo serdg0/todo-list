@@ -1,7 +1,8 @@
 const project = (args) => {
   const { title } = args;
   const { description } = args;
-  const tasks = [];
+  var tasks = [];
+  
   const projectCompleted = () => {
     if (args.hasOwnProperty('completed')) {
       return args.completed
@@ -17,8 +18,8 @@ const project = (args) => {
     }
     return args.completed
   }
-  const addTask = (task, project) => {
-    return project.tasks.push(task)
+  const addTask = (task) => {
+    return tasks.push(task);
   }
   const taskTitles = () => {
     let titles = tasks.map(obj => ({
