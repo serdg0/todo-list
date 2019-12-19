@@ -4,20 +4,34 @@ import task from './task';
 //display all project, display tasks, add new project button, add delete button, project complete checkbox
 //task complete checkbox, form for project, form for task.
 const addTaskForm = (project) => {
-  let container = document.getElementById('container');
-  let title = document.createElement('input');
-  const args = { title: `${title.value}` };
-  let submit = addButton();
-  submit.onclick = project.addTask(task(args));
+  const container = document.getElementById(`${project.index}`);
+  container.innerHTML = '';
+  const title = document.createElement('input');
+  const titleLabel = document.createElement('label');
+  titleLabel.setAttribute('for', 'task-title');
+  titleLabel.innerHTML = 'Task: ';
+  const checkBox = document.createElement('input');
+  checkBox.type = "checkbox";
+  checkBox.setAttribute('id', 'completed');
+  const boxLabel = document.createElement('label');
+  boxLabel.setAttribute('for', 'completed');
+  boxLabel.innerHTML = 'Task done?';
+  const submitButton = document.createElement('button');
+  submitButton.innerHTML = 'Add';
+  submitButton.onclick = () => addTaskToProj(project, title, checkBox);
+  container.appendChild(titleLabel);
   container.appendChild(title);
-  container.appendChild(submit);
+  container.appendChild(boxLabel);
+  container.appendChild(checkBox);
+  container.appendChild(submitButton);
+  return container
 }
 
-const addButton = (project) => {
-  const addButton = document.createElement('button');
-  addButton.innerHTML = 'New Task';
-  addButton.onclick = addTaskForm(project)
-  return addButton;
+const addTaskToProj = (proj, input, checkbox) => {
+  project(proj).addTask(task({
+    title: `${input.value}`,
+    completed: checkbox.checked,
+  }));
 }
 
 const deleteButton = (project, index) => {
@@ -28,6 +42,7 @@ const deleteButton = (project, index) => {
 }
 
 const taskDivs = (obj) => {
+  
   let taskArr = [];
   obj.tasks.forEach(task => {
     const container = document.createElement('div');
@@ -38,7 +53,6 @@ const taskDivs = (obj) => {
     textCompleted.setAttribute('type', 'checkbox');
     textCompleted.setAttribute('id', `${task.title}`);
     textCompleted.checked = task.completed;
-    //const textCompleted = document.createTextNode(`${task.completed}`);
     taskTitle.appendChild(textTitle);
     taskCompleted.appendChild(textCompleted);
     container.appendChild(taskTitle);
@@ -49,7 +63,7 @@ const taskDivs = (obj) => {
 }
 
 const projectDivs = (todoList) => {
-  const hash = todoList.allProjects;
+  const hash = JSON.parse(JSON.stringify(todoList.list));
   let projectArr = [];
   for (let key in hash) {
     const obj = JSON.parse(hash[key]);
@@ -59,18 +73,23 @@ const projectDivs = (todoList) => {
     const textTitle = document.createTextNode(`TITLE: ${obj.title}`);
     const textDescription = document.createTextNode(`DESCRIPTION: ${obj.description}`);
     const tasksDivisions = taskDivs(obj);
+    const addTaskButton = document.createElement('button');
+    addTaskButton.innerHTML = 'Add a task';
+    addTaskButton.onclick = () => addTaskForm(obj);
     projectTitle.appendChild(textTitle);
     projectDescription.appendChild(textDescription);
     projectDiv.appendChild(projectTitle);
     projectDiv.appendChild(projectDescription);
+   const formDiv = document.createElement('div');
+   formDiv.setAttribute('id', `${obj.index}`)
 
     tasksDivisions.forEach(div => {
       projectDiv.appendChild(div);
     })
-    const taskFormDiv = document.createElement('div');
-    taskFormDiv.appendChild(addButton(obj));
-    projectDiv.appendChild(taskFormDiv);
 
+
+    projectDiv.appendChild(addTaskButton);
+    projectDiv.appendChild(formDiv);
     projectArr.push(projectDiv);
   }
   return projectArr;

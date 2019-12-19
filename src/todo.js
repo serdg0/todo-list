@@ -1,23 +1,22 @@
 const todoList = () => {
-  let list = window.localStorage; //object
+  let list = window.localStorage;
   let index = 0;
   
   const addProject = (project) => {
+    project.index = index;
     const projectText = JSON.stringify(project);
     list.setItem(index, projectText);
     index++;
   }
 
-  const allProjects = JSON.parse(JSON.stringify(list));
-
-  const destroyProject = (project) => {
-    list.removeItem(project);
+  const deleteProject = (index) => {
+    list.removeItem(index);
   }
+
   return {
     list,
-    allProjects,
     addProject,
-    destroyProject,
+    deleteProject,
   }
 }
 

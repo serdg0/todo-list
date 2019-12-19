@@ -1,7 +1,7 @@
 const project = (args) => {
   const { title } = args;
   const { description } = args;
-  var tasks = [];
+  let tasks = [];
 
   const projectCompleted = () => {
     if (args.hasOwnProperty('completed')) {
@@ -18,28 +18,30 @@ const project = (args) => {
     }
     return args.completed
   }
-  const addTask = (task) => {
-    let index = myIndex();
-    let object = mySelf();
-    object.tasks.push(task);
-    localStorage[index] = JSON.stringify(object);
-  }
 
   const mySelf = () => {
     let thisProj;
     Array.from(localStorage).forEach(string => {
-      let obj = JSON.parse(string);
-      if (obj.title === title) {
-        thisProj = obj;
-      }
-    })
-    return thisProj;
+    let obj = JSON.parse(string);
+    if (obj.title === title) {
+      thisProj = obj;
+    }
+  })
+  return thisProj;
   }
 
   const myIndex = () => {
     let obj = mySelf();
     return Array.from(localStorage).indexOf(JSON.stringify(obj));
   }
+
+  const addTask = (task) => {
+    let index = myIndex();
+    let object = mySelf();
+    object.tasks.push(task);
+    localStorage[index] = JSON.stringify(object);
+  }
+  
 
   const deleteTask = (index) => {
     return delete tasks[index];
@@ -53,6 +55,6 @@ const project = (args) => {
     deleteTask,
     projectCompleted,
   };
-};
+}
 
-export default project;
+export default project
