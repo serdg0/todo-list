@@ -54,7 +54,7 @@ const project = (args) => {
     addTask,
     deleteTask,
     projectCompleted,
-  };
+  }
 }
 
 export default project

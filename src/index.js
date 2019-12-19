@@ -1,7 +1,7 @@
 import project from './project'
 import task from './task'
-import displayInt from './dom';
-import todoList from './todo';
+import {addProject} from './dom';
+import {displayInt} from './dom';
 
 const newProj = project({
     title: 'NEW PROJECT',
@@ -11,7 +11,6 @@ const newProj = project({
 const newTask = task({
     title: 'model'
 })
-
 const newTaskOn = task({
     title: 'start interface'
 })
@@ -25,9 +24,9 @@ const taskito = task({
     title: 'taskito'
 })
 
-let app = todoList();
-app.addProject(newProj);
-app.addProject(projectito);
+
+addProject(newProj);
+addProject(projectito);
 newProj.addTask(newTask);
 newProj.addTask(newTaskOn);
 projectito.addTask(taskito);
@@ -35,7 +34,4 @@ newProj.addTask(task({
     title: 'COMMIT IT DUDE'
 }))
 
-
-displayInt(app);
-
-//displayProjects(app);
+displayInt();

@@ -1,8 +1,16 @@
-import todoList from './todo';
+
 import project from './project';
 import task from './task';
 //display all project, display tasks, add new project button, add delete button, project complete checkbox
 //task complete checkbox, form for project, form for task.
+var index = 0;
+
+const addProject = (project) => {
+  const projectText = JSON.stringify(project);
+  localStorage.setItem(index, projectText);
+  index++;
+}
+
 const addTaskForm = (project) => {
   const container = document.getElementById(`${project.index}`);
   container.innerHTML = '';
@@ -27,18 +35,42 @@ const addTaskForm = (project) => {
   return container
 }
 
+const addProjectNav = () => {
+  const nav = document.getElementById('nav');
+  const newProject = document.createElement('button');
+  newProject.innerHTML = 'New To-do';
+  newProject.onclick = () => projectForm();
+  nav.appendChild(newProject);
+}
+
+const projectForm = () => {
+  const nav = document.getElementById('nav');
+  const formDiv = document.createElement('div');
+  nav.appendChild(formDiv);
+  const title = document.createElement('input');
+  const completed = document.createElement('input');
+  completed.setAttribute('type', 'checkbox');
+  const description = document.createElement('input');
+  const submitButton = document.createElement('button');
+  submitButton.innerHTML = 'Submit';
+  submitButton.onclick = () => addProject(project({
+    title: `${title.value}`,
+    description: `${description.value}`,
+    completed: completed.checked,
+  }));
+
+    formDiv.appendChild(title)
+    formDiv.appendChild(description);
+    formDiv.appendChild(completed);
+    formDiv.appendChild(submitButton);
+
+}
+
 const addTaskToProj = (proj, input, checkbox) => {
   project(proj).addTask(task({
     title: `${input.value}`,
     completed: checkbox.checked,
   }));
-}
-
-const deleteButton = (project, index) => {
-  const deleteButton = document.createElement('button');
-  deleteButton.innerHTML = 'Delete Task';
-  deleteButton.onclick = project.deleteTask(index);
-  return deleteButton;
 }
 
 const taskDivs = (obj) => {
@@ -62,8 +94,8 @@ const taskDivs = (obj) => {
   return taskArr;
 }
 
-const projectDivs = (todoList) => {
-  const hash = JSON.parse(JSON.stringify(todoList.list));
+const projectDivs = () => {
+  const hash = JSON.parse(JSON.stringify(localStorage));
   let projectArr = [];
   for (let key in hash) {
     const obj = JSON.parse(hash[key]);
@@ -95,8 +127,9 @@ const projectDivs = (todoList) => {
   return projectArr;
 }
 
-const displayInt = (todoList) => {
-  const divs = projectDivs(todoList);
+const displayInt = () => {
+  addProjectNav();
+  const divs = projectDivs();
   const body = document.getElementsByTagName('body')[0];
 
   divs.forEach(project => {
@@ -104,4 +137,4 @@ const displayInt = (todoList) => {
   })
 }
 
-export default displayInt;
+export {displayInt, addProject};
