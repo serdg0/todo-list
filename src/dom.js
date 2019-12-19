@@ -6,16 +6,17 @@ import task from './task';
 const addTaskForm = (project) => {
   let container = document.getElementById('container');
   let title = document.createElement('input');
-  newTask.title = title.value;
+  const args = { title: `${title.value}` };
   let submit = addButton();
-  submit.onclick = addTask(newTask, project);
+  submit.onclick = project.addTask(task(args));
   container.appendChild(title);
   container.appendChild(submit);
 }
 
-const addButton = () => {
+const addButton = (project) => {
   const addButton = document.createElement('button');
   addButton.innerHTML = 'New Task';
+  addButton.onclick = addTaskForm(project)
   return addButton;
 }
 
@@ -66,6 +67,9 @@ const projectDivs = (todoList) => {
     tasksDivisions.forEach(div => {
       projectDiv.appendChild(div);
     })
+    const taskFormDiv = document.createElement('div');
+    taskFormDiv.appendChild(addButton(obj));
+    projectDiv.appendChild(taskFormDiv);
 
     projectArr.push(projectDiv);
   }
@@ -75,6 +79,7 @@ const projectDivs = (todoList) => {
 const displayInt = (todoList) => {
   const divs = projectDivs(todoList);
   const body = document.getElementsByTagName('body')[0];
+
   divs.forEach(project => {
     body.appendChild(project);
   })
