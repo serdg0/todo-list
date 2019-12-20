@@ -1,0 +1,15 @@
+html body {
+  font-family: 'Courier Prime', monospace;
+}
+
+html body nav {
+  color: #ffffff;
+  background-color: #181818;
+}
+
+html body h1 {
+  font-size: 30px;
+  font-weight: 500;
+  font-family: 'Orbitron', sans-serif;
+}
+/*# sourceMappingURL=style.css.map */
