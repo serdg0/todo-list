@@ -56,6 +56,15 @@ html body .project-header .input {
   background-color: transparent;
   border: none;
   border-bottom: 1px solid #383838;
+  min-height: 35px;
+  width: 100%;
+  color: #fff;
+}
+
+html body .project-header .title {
+  font-size: 2rem;
+  width: 50%;
+  margin-bottom: 10px;
 }
 
 html body .project-nav {
