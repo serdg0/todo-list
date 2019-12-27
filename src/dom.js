@@ -12,8 +12,8 @@ const addProject = (project) => {
 }
 
 const addTaskForm = (project) => {
-  const container = document.getElementById(`${project.title}`);
-  //container.innerHTML = '';
+  const container = document.getElementById(`add-task-form`);
+  container.innerHTML = '';
   const title = document.createElement('input');
   const titleLabel = document.createElement('label');
   titleLabel.setAttribute('for', 'task-title');
@@ -26,7 +26,12 @@ const addTaskForm = (project) => {
   boxLabel.innerHTML = 'Task done?';
   const submitButton = document.createElement('button');
   submitButton.innerHTML = 'Add';
-  submitButton.onclick = () => addTaskToProj(project, title, checkBox);
+  submitButton.onclick = () => {
+    addTaskToProj(project, title, checkBox);
+    displayInt();
+    openProject(project);
+    container.innerHTML = ' ';
+  }
   container.appendChild(titleLabel);
   container.appendChild(title);
   container.appendChild(boxLabel);
@@ -36,33 +41,45 @@ const addTaskForm = (project) => {
 }
 
 const addProjectNav = () => {
-  const nav = document.getElementById('nav');
+  const nav = document.getElementById('add-project-div');
+  nav.innerHTML = ' ';
   const newProject = document.createElement('button');
+  newProject.setAttribute('class', 'project-button bg-primary text-white');
   newProject.innerHTML = 'New To-do';
-  newProject.onclick = () => projectForm();
+  newProject.onclick = () => {
+    document.getElementById('project-tasks').innerHTML = ' ';
+    document.getElementById('project-add-task').innerHTML = ' ';
+    projectForm();
+  }
   nav.appendChild(newProject);
 }
 
 const projectForm = () => {
-  const nav = document.getElementById('nav');
-  const formDiv = document.createElement('div');
-  nav.appendChild(formDiv);
+  const titleDiv = document.getElementById('project-head-div');
+  titleDiv.innerHTML = ' ';
+  const descDiv = document.getElementById('project-dec');
+  descDiv.innerHTML = ' ';
   const title = document.createElement('input');
+  title.setAttribute('class', 'input title');
+  const description = document.createElement('input');
+  description.setAttribute('class', 'input desc')
   const completed = document.createElement('input');
   completed.setAttribute('type', 'checkbox');
-  const description = document.createElement('input');
   const submitButton = document.createElement('button');
   submitButton.innerHTML = 'Submit';
-  submitButton.onclick = () => addProject(project({
-    title: `${title.value}`,
-    description: `${description.value}`,
-    completed: completed.checked,
-  }));
+  submitButton.onclick = () => {
+    addProject(project({
+      title: `${title.value}`,
+      description: `${description.value}`,
+      completed: completed.checked,
+    }));
+    displayInt();
+  }
 
-  formDiv.appendChild(title)
-  formDiv.appendChild(description);
-  formDiv.appendChild(completed);
-  formDiv.appendChild(submitButton);
+  titleDiv.appendChild(title);
+  descDiv.appendChild(description);
+  descDiv.appendChild(completed);
+  descDiv.appendChild(submitButton);
 
 }
 
@@ -78,13 +95,18 @@ const taskDivs = (obj) => {
   let taskArr = [];
   obj.tasks.forEach(task => {
     const container = document.createElement('div');
-    const taskTitle = document.createElement('div');
-    const taskCompleted = document.createElement('div');
+    const taskTitle = document.createElement('span');
+    const taskCompleted = document.createElement('span');
     const textTitle = document.createTextNode(`${task.title}`);
     const textCompleted = document.createElement('input');
     textCompleted.setAttribute('type', 'checkbox');
     textCompleted.setAttribute('id', `${task.title}`);
     textCompleted.checked = task.completed;
+    if (task.completed) {
+      container.setAttribute('class', 'task-div bg-success text-white');
+    } else {
+      container.setAttribute('class', 'task-div bg-warning text-dark');
+    }
     taskTitle.appendChild(textTitle);
     taskCompleted.appendChild(textCompleted);
     container.appendChild(taskTitle);
@@ -118,8 +140,7 @@ const printProject = (obj) => {
 
   index += 1;
   projectDiv.appendChild(addTaskButton);
-  projectDiv.appendChild(formDiv);
-  return projectDiv;
+  project - dec
 }
 
 const projectDivs = () => {
@@ -132,13 +153,63 @@ const projectDivs = () => {
   return projectArr;
 }
 
-const displayInt = () => {
-  addProjectNav();
-  const divs = projectDivs();
-  const body = document.getElementsByTagName('body')[0];
+const listProject = () => {
+  const hash = JSON.parse(JSON.stringify(localStorage));
+  let projectArr = [];
+  for (let key in hash) {
+    const obj = JSON.parse(hash[key]);
+    projectArr.push(printProjectList(obj, projectArr));
+  }
+  return projectArr;
+}
 
+const printProjectList = (obj) => {
+  const projectButton = document.createElement('button');
+  projectButton.setAttribute('id', `${obj.title}`);
+  projectButton.setAttribute('class', 'project-button');
+  projectButton.innerHTML = `${obj.title}`;
+  projectButton.onclick = () => openProject(obj);
+  index += 1;
+  return projectButton;
+}
+
+const openProject = (obj) => {
+  const projectHeadDiv = document.getElementById('project-head-div');
+  projectHeadDiv.innerHTML = ' ';
+  const projectHead = document.createElement('h2');
+  projectHead.setAttribute('id', 'project-head');
+  projectHead.innerHTML = `${obj.title}`;
+  projectHeadDiv.appendChild(projectHead);
+  const projectDesc = document.getElementById('project-dec');
+  const projectText = document.createElement('p');
+  projectText.textContent = `${obj.description}`;
+  projectDesc.innerHTML = projectText.outerHTML;
+
+  const tasksDivisions = taskDivs(obj);
+  const projectTasks = document.getElementById('project-tasks');
+  projectTasks.innerHTML = ' ';
+
+  tasksDivisions.forEach(div => {
+    projectTasks.appendChild(div);
+  })
+  document.getElementById('add-task-form').innerHTML = ' ';
+  const addTaskButton = document.createElement('button');
+  addTaskButton.innerHTML = 'Add a task';
+  addTaskButton.onclick = () => addTaskForm(obj);
+  const addTaskDiv = document.getElementById('project-add-task');
+  addTaskDiv.innerHTML = ' ';
+  addTaskDiv.appendChild(addTaskButton);
+}
+
+const displayInt = () => {
+  index = 0;
+  addProjectNav();
+  const divs = listProject();
+  const body = document.getElementsByTagName('body')[0];
+  const projectListDiv = document.getElementById('project-list');
+  projectListDiv.innerHTML = ' ';
   divs.forEach(project => {
-    body.appendChild(project);
+    projectListDiv.appendChild(project);
   })
 }
 
