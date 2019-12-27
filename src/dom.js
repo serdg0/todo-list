@@ -61,12 +61,16 @@ const projectForm = () => {
   descDiv.innerHTML = ' ';
   const title = document.createElement('input');
   title.setAttribute('class', 'input title');
-  const description = document.createElement('input');
+  title.placeholder = 'Project Name';
+  const description = document.createElement('textarea');
+  description.setAttribute('rows', '4');
   description.setAttribute('class', 'input desc')
+  description.placeholder = 'Project Description';
   const completed = document.createElement('input');
   completed.setAttribute('type', 'checkbox');
   const submitButton = document.createElement('button');
-  submitButton.innerHTML = 'Submit';
+  submitButton.innerHTML = 'Add Project';
+  submitButton.setAttribute('class', 'btn btn-primary');
   submitButton.onclick = () => {
     addProject(project({
       title: `${title.value}`,
