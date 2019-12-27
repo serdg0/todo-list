@@ -11,10 +11,34 @@
   <title>Document</title>
 </head>
 
-<body>
-  <nav id="nav" class="navbar sticky-top">
+<body class="h-100">
+  <nav id="nav" class="navbar position-static">
     <h1>To Do Board</h1>
   </nav>
+  <main>
+    <div class="container h-100">
+      <div class="row h-100">
+        <div class="col-2 project-nav hidden-md-down">
+          <div id="project-list" class="overflow-auto"></div>
+          <div id="add-project-div"></div>
+        </div>
+        <div class="col-10 h-100 overflow-auto">
+          <div class="project-header">
+            <div class="container" id="project-head-div">
+              <h2 id="project-head">Select a project</h2>
+            </div>
+            <div class="container" id="project-dec"></div>
+          </div>
+          <div class="container">
+            <h2>Tasks</h2>
+            <div class="container" id="project-tasks"></div>
+            <div class="container" id="add-task-form"></div>
+            <div class="container" id="project-add-task"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 
   <script type="module" src="bundle.js"></script>
 </body>

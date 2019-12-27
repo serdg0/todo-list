@@ -1,15 +1,75 @@
+html {
+  height: 100%;
+}
+
+html main {
+  height: 100%;
+}
+
 html body {
+  background-color: #181818;
+  color: #fff;
   font-family: 'Courier Prime', monospace;
 }
 
 html body nav {
-  color: #ffffff;
-  background-color: #181818;
+  color: #04a026;
+  background-color: #0f0f0f;
 }
 
 html body h1 {
   font-size: 30px;
   font-weight: 500;
   font-family: 'Orbitron', sans-serif;
+  width: 100%;
+  text-align: center;
+}
+
+html body .container {
+  max-width: 100%;
+  margin: 0;
+}
+
+html body .container .col-10 {
+  margin: 0 0;
+}
+
+html body .task-div {
+  width: 100%;
+  height: 36px;
+  margin: 2px 0;
+  padding: 5px;
+  font-size: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+html body .project-header {
+  min-height: 200px;
+}
+
+html body .project-header .input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #383838;
+}
+
+html body .project-nav {
+  background-color: #0f0f0f;
+  height: 100%;
+}
+
+html body .project-nav .project-button {
+  width: 100%;
+  height: 40px;
+  margin: 2px 0;
+  font-family: 'Orbitron', sans-serif;
+  background-color: #04a026;
+  color: #fff;
+  border: 0;
 }
 /*# sourceMappingURL=style.css.map */
