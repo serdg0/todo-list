@@ -28,9 +28,11 @@ const addTaskForm = (project) => {
   submitButton.innerHTML = 'Add';
   submitButton.onclick = () => {
     addTaskToProj(project, title, checkBox);
+    console.log(project)
+    console.log(localStorage[0]);
     displayInt();
-    openProject(project);
     container.innerHTML = ' ';
+    openProject(JSON.parse(localStorage[project.index]));
   }
   container.appendChild(titleLabel);
   container.appendChild(title);
@@ -88,14 +90,13 @@ const projectForm = () => {
 }
 
 const addTaskToProj = (proj, input, checkbox) => {
-  project(proj).addTask(task({
+  return project(proj).addTask(task({
     title: `${input.value}`,
     completed: checkbox.checked,
   }));
 }
 
 const taskDivs = (obj) => {
-
   let taskArr = [];
   obj.tasks.forEach(task => {
     const container = document.createElement('div');
@@ -106,7 +107,7 @@ const taskDivs = (obj) => {
     textCompleted.setAttribute('type', 'checkbox');
     textCompleted.setAttribute('id', `${task.title}`);
     textCompleted.checked = task.completed;
-    if (task.completed) {
+    if (textCompleted.checked) {
       container.setAttribute('class', 'task-div bg-success text-white');
     } else {
       container.setAttribute('class', 'task-div bg-warning text-dark');
@@ -203,13 +204,13 @@ const openProject = (obj) => {
   const addTaskDiv = document.getElementById('project-add-task');
   addTaskDiv.innerHTML = ' ';
   addTaskDiv.appendChild(addTaskButton);
+  console.log('this is ' + obj)
 }
 
 const displayInt = () => {
   index = 0;
   addProjectNav();
   const divs = listProject();
-  const body = document.getElementsByTagName('body')[0];
   const projectListDiv = document.getElementById('project-list');
   projectListDiv.innerHTML = ' ';
   divs.forEach(project => {
