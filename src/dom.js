@@ -11,6 +11,10 @@ const addProject = (project) => {
   index += 1;
 }
 
+const deleteProject = (project) => {
+  localStorage.removeItem(project.index); 
+}
+
 const addTaskForm = (project) => {
   const container = document.getElementById(`add-task-form`);
   container.innerHTML = '';
@@ -209,11 +213,18 @@ const openProject = (obj) => {
   })
   document.getElementById('add-task-form').innerHTML = ' ';
   const addTaskButton = document.createElement('button');
+  const deleteButton = document.createElement('button');
+  deleteButton.innerHTML = 'Delete ' + obj.title;
+  deleteButton.onclick = () => {
+    deleteProject(obj);
+    displayInt();
+  }
   addTaskButton.innerHTML = 'Add a task';
   addTaskButton.onclick = () => addTaskForm(obj);
   const addTaskDiv = document.getElementById('project-add-task');
   addTaskDiv.innerHTML = ' ';
   addTaskDiv.appendChild(addTaskButton);
+  projectHeadDiv.appendChild(deleteButton);
 }
 
 const displayInt = () => {
