@@ -68,10 +68,6 @@ html body .project-header {
   min-height: 200px;
 }
 
-html body .project-header #project-head {
-  width: 75%;
-}
-
 html body .project-header .input {
   background-color: transparent;
   border: none;

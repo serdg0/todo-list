@@ -1,7 +1,6 @@
 import project from './project';
 import task from './task';
-//display all project, display tasks, add new project button, add delete button, project complete checkbox
-//task complete checkbox, form for project, form for task.
+
 var index = 0;
 
 const addProject = (project) => {
@@ -145,107 +144,71 @@ const taskDivs = (obj) => {
   return taskArr;
 }
 
-const printProject = (obj) => {
-    const projectDiv = document.createElement('div');
-    projectDiv.setAttribute('id', `${obj.title}`)
-    const projectTitle = document.createElement('div');
-    const projectDescription = document.createElement('div');
-    const textTitle = document.createTextNode(`TITLE: ${obj.title}`);
-    const textDescription = document.createTextNode(`DESCRIPTION: ${obj.description}`);
-    const tasksDivisions = taskDivs(obj);
-    const addTaskButton = document.createElement('button');
-    addTaskButton.innerHTML = 'Add a task';
-    addTaskButton.onclick = () => addTaskForm(obj);
-    projectTitle.appendChild(textTitle);
-    projectDescription.appendChild(textDescription);
-    projectDiv.appendChild(projectTitle);
-    projectDiv.appendChild(projectDescription);
-    const formDiv = document.createElement('div');
-    formDiv.setAttribute('id', `${obj.index}`)
+const listProject = () => {
+  const hash = JSON.parse(JSON.stringify(localStorage));
+  let projectArr = [];
+  for (let key in hash) {
+    const obj = JSON.parse(hash[key]);
+    projectArr.push(printProjectList(obj, projectArr));
+  }
+  return projectArr;
+}
 
-    tasksDivisions.forEach(div => {
-      projectDiv.appendChild(div);
-    })
+const printProjectList = (obj) => {
+  const projectButton = document.createElement('button');
+  projectButton.setAttribute('id', `${obj.title}`);
+  projectButton.setAttribute('class', 'project-button');
+  projectButton.innerHTML = `${obj.title}`;
+  projectButton.onclick = () => openProject(obj);
+  index += 1;
+  return projectButton;
+}
 
-    index += 1;
-    projectDiv.appendChild(addTaskButton);
-    project - dec
+const openProject = (obj) => {
+  const projectHeadDiv = document.getElementById('project-head-div');
+  projectHeadDiv.innerHTML = ' ';
+  const projectHead = document.createElement('h2');
+  projectHead.setAttribute('id', 'project-head');
+  projectHead.innerHTML = `${obj.title}`;
+  projectHeadDiv.appendChild(projectHead);
+  const projectDesc = document.getElementById('project-dec');
+  const projectText = document.createElement('p');
+  projectText.textContent = `${obj.description}`;
+  projectDesc.innerHTML = projectText.outerHTML;
 
-    const projectDivs = () => {
-      const hash = JSON.parse(JSON.stringify(localStorage));
-      let projectArr = [];
-      for (let key in hash) {
-        const obj = JSON.parse(hash[key]);
-        projectArr.push(printProject(obj, projectArr));
-      }
-      return projectArr;
-    }
+  const tasksDivisions = taskDivs(obj);
+  const projectTasks = document.getElementById('project-tasks');
+  projectTasks.innerHTML = ' ';
 
-    const listProject = () => {
-      const hash = JSON.parse(JSON.stringify(localStorage));
-      let projectArr = [];
-      for (let key in hash) {
-        const obj = JSON.parse(hash[key]);
-        projectArr.push(printProjectList(obj, projectArr));
-      }
-      return projectArr;
-    }
+  tasksDivisions.forEach(div => {
+    projectTasks.appendChild(div);
+  })
+  document.getElementById('add-task-form').innerHTML = ' ';
+  const addTaskButton = document.createElement('button');
+  const deleteButton = document.createElement('button');
+  deleteButton.setAttribute('class', 'delete-button');
+  deleteButton.innerHTML = 'Delete ' + obj.title;
+  deleteButton.onclick = () => {
+    deleteProject(obj);
+    displayInt();
+  }
+  addTaskButton.innerHTML = 'Add a task';
+  addTaskButton.onclick = () => addTaskForm(obj);
+  const addTaskDiv = document.getElementById('project-add-task');
+  addTaskDiv.innerHTML = ' ';
+  addTaskDiv.appendChild(addTaskButton);
+  projectHeadDiv.appendChild(deleteButton);
+}
 
-    const printProjectList = (obj) => {
-      const projectButton = document.createElement('button');
-      projectButton.setAttribute('id', `${obj.title}`);
-      projectButton.setAttribute('class', 'project-button');
-      projectButton.innerHTML = `${obj.title}`;
-      projectButton.onclick = () => openProject(obj);
-      index += 1;
-      return projectButton;
-    }
+const displayInt = () => {
+  index = 0;
+  addProjectNav();
+  const divs = listProject();
+  const projectListDiv = document.getElementById('project-list');
+  projectListDiv.innerHTML = ' ';
+  divs.forEach(project => {
+    projectListDiv.appendChild(project);
+  })
+}
 
-    const openProject = (obj) => {
-      const projectHeadDiv = document.getElementById('project-head-div');
-      projectHeadDiv.innerHTML = ' ';
-      const projectHead = document.createElement('h2');
-      projectHead.setAttribute('id', 'project-head');
-      projectHead.innerHTML = `${obj.title}`;
-      projectHeadDiv.appendChild(projectHead);
-      const projectDesc = document.getElementById('project-dec');
-      const projectText = document.createElement('p');
-      projectText.textContent = `${obj.description}`;
-      projectDesc.innerHTML = projectText.outerHTML;
-
-      const tasksDivisions = taskDivs(obj);
-      const projectTasks = document.getElementById('project-tasks');
-      projectTasks.innerHTML = ' ';
-
-      tasksDivisions.forEach(div => {
-        projectTasks.appendChild(div);
-      })
-      document.getElementById('add-task-form').innerHTML = ' ';
-      const addTaskButton = document.createElement('button');
-      const deleteButton = document.createElement('button');
-      deleteButton.setAttribute('class', 'delete-button');
-      deleteButton.innerHTML = 'Delete ' + obj.title;
-      deleteButton.onclick = () => {
-        deleteProject(obj);
-        displayInt();
-      }
-      addTaskButton.innerHTML = 'Add a task';
-      addTaskButton.onclick = () => addTaskForm(obj);
-      const addTaskDiv = document.getElementById('project-add-task');
-      addTaskDiv.innerHTML = ' ';
-      addTaskDiv.appendChild(addTaskButton);
-      projectHeadDiv.appendChild(deleteButton);
-    }
-
-    const displayInt = () => {
-      index = 0;
-      addProjectNav();
-      const divs = listProject();
-      const projectListDiv = document.getElementById('project-list');
-      projectListDiv.innerHTML = ' ';
-      divs.forEach(project => {
-        projectListDiv.appendChild(project);
-      })
-    }
-
-    export { displayInt, addProject };
+export { displayInt, addProject };
