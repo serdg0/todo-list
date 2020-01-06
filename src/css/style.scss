@@ -25,19 +25,34 @@ html {
         margin: 0 0;
       }
     }
+    .delete-button {
+      height: 30px;
+      margin: 2px 0;
+      font-size: 16px;
+      font-family: 'Orbitron', sans-serif;
+      background: none;
+      color: #d62000;
+      border: 1px solid #d62000;
+    }
     .task-div {
       width: 100%;
-      height: 36px;
+      height: 46px;
       margin: 2px 0;
       padding: 5px;
-      font-size: 20px;
+      font-size: 28px;
       display: flex;
       justify-content: space-between;
+      input {
+        margin-right: 15px;
+      }
     }
     .project-header {
       margin-top: 22px;
       margin-bottom: 22px;
       min-height: 200px;
+      #project-head {
+        width: 75%;
+      }
       .input {
         background-color: transparent;
         border: none;
@@ -55,14 +70,19 @@ html {
     .project-nav {
       background-color: #0f0f0f;
       height: 100%;
-      .project-button {
+      button {
         width: 100%;
         height: 40px;
         margin: 2px 0;
         font-family: 'Orbitron', sans-serif;
-        background-color: #04a026;
         color: #fff;
         border: 0;
+      }
+      .project-button {
+        background-color: #04a026;
+      }
+      .clear-all {
+        background-color: #ce2f2f;
       }
     }
   }
