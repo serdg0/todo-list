@@ -28,8 +28,6 @@ const addTaskForm = (project) => {
   submitButton.innerHTML = 'Add';
   submitButton.onclick = () => {
     addTaskToProj(project, title, checkBox);
-    console.log(project)
-    console.log(localStorage[0]);
     displayInt();
     container.innerHTML = ' ';
     openProject(JSON.parse(localStorage[project.index]));
@@ -112,10 +110,22 @@ const taskDivs = (obj) => {
     } else {
       container.setAttribute('class', 'task-div bg-warning text-dark');
     }
+    textCompleted.onclick = () => {
+      task.completed = !task.completed;
+      openProject(obj);
+    }
+    const deleteButton = document.createElement('button');
+    deleteButton.innerHTML = 'Delete';
+    deleteButton.onclick = () => {
+      const index = obj.tasks.indexOf(task);
+      obj.tasks.splice(index, 1);
+      openProject(obj);
+    }
     taskTitle.appendChild(textTitle);
     taskCompleted.appendChild(textCompleted);
     container.appendChild(taskTitle);
     container.appendChild(taskCompleted);
+    container.appendChild(deleteButton);
     taskArr.push(container);
   });
   return taskArr;
@@ -204,7 +214,6 @@ const openProject = (obj) => {
   const addTaskDiv = document.getElementById('project-add-task');
   addTaskDiv.innerHTML = ' ';
   addTaskDiv.appendChild(addTaskButton);
-  console.log('this is ' + obj)
 }
 
 const displayInt = () => {
