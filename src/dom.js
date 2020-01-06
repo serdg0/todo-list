@@ -55,7 +55,14 @@ const addProjectNav = () => {
     document.getElementById('project-add-task').innerHTML = ' ';
     projectForm();
   }
+  const clear = document.createElement('button');
+  clear.innerHTML = 'Clear All';
+  clear.onclick = () => {
+    localStorage.clear();
+    displayInt();
+  }
   nav.appendChild(newProject);
+  nav.appendChild(clear);
 }
 
 const projectForm = () => {
