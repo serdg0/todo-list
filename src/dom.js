@@ -1,28 +1,28 @@
 import project from './project';
 import task from './task';
 
-var index = 0;
+let index = 0;
 
 const addProject = (project) => {
   project.index = index;
   const projectText = JSON.stringify(project);
   localStorage.setItem(index, projectText);
   index += 1;
-}
+};
 
 const deleteProject = (project) => {
   localStorage.removeItem(project.index);
-}
+};
 
 const addTaskForm = (project) => {
-  const container = document.getElementById(`add-task-form`);
+  const container = document.getElementById('add-task-form');
   container.innerHTML = '';
   const title = document.createElement('input');
   const titleLabel = document.createElement('label');
   titleLabel.setAttribute('for', 'task-title');
   titleLabel.innerHTML = 'Task: ';
   const checkBox = document.createElement('input');
-  checkBox.type = "checkbox";
+  checkBox.type = 'checkbox';
   checkBox.setAttribute('id', 'completed');
   const boxLabel = document.createElement('label');
   boxLabel.setAttribute('for', 'completed');
@@ -34,14 +34,14 @@ const addTaskForm = (project) => {
     displayInt();
     container.innerHTML = ' ';
     openProject(JSON.parse(localStorage[project.index]));
-  }
+  };
   container.appendChild(titleLabel);
   container.appendChild(title);
   container.appendChild(boxLabel);
   container.appendChild(checkBox);
   container.appendChild(submitButton);
-  return container
-}
+  return container;
+};
 
 const addProjectNav = () => {
   const nav = document.getElementById('add-project-div');
@@ -53,17 +53,17 @@ const addProjectNav = () => {
     document.getElementById('project-tasks').innerHTML = ' ';
     document.getElementById('project-add-task').innerHTML = ' ';
     projectForm();
-  }
+  };
   const clear = document.createElement('button');
   clear.setAttribute('class', 'clear-all');
   clear.innerHTML = 'Clear All';
   clear.onclick = () => {
     localStorage.clear();
     displayInt();
-  }
+  };
   nav.appendChild(newProject);
   nav.appendChild(clear);
-}
+};
 
 const projectForm = () => {
   const titleDiv = document.getElementById('project-head-div');
@@ -75,7 +75,7 @@ const projectForm = () => {
   title.placeholder = 'Project Name';
   const description = document.createElement('textarea');
   description.setAttribute('rows', '4');
-  description.setAttribute('class', 'input desc')
+  description.setAttribute('class', 'input desc');
   description.placeholder = 'Project Description';
   const completed = document.createElement('input');
   completed.setAttribute('type', 'checkbox');
@@ -89,25 +89,22 @@ const projectForm = () => {
       completed: completed.checked,
     }));
     displayInt();
-  }
+  };
 
   titleDiv.appendChild(title);
   descDiv.appendChild(description);
   descDiv.appendChild(completed);
   descDiv.appendChild(submitButton);
+};
 
-}
-
-const addTaskToProj = (proj, input, checkbox) => {
-  return project(proj).addTask(task({
-    title: `${input.value}`,
-    completed: checkbox.checked,
-  }));
-}
+const addTaskToProj = (proj, input, checkbox) => project(proj).addTask(task({
+  title: `${input.value}`,
+  completed: checkbox.checked,
+}));
 
 const taskDivs = (obj) => {
-  let taskArr = [];
-  obj.tasks.forEach(task => {
+  const taskArr = [];
+  obj.tasks.forEach((task) => {
     const container = document.createElement('div');
     const taskTitle = document.createElement('span');
     const taskCompleted = document.createElement('span');
@@ -125,7 +122,7 @@ const taskDivs = (obj) => {
     textCompleted.onclick = () => {
       task.completed = !task.completed;
       openProject(obj);
-    }
+    };
     const deleteButton = document.createElement('button');
     deleteButton.innerHTML = 'Delete';
     deleteButton.setAttribute('class', 'delete-button');
@@ -133,7 +130,7 @@ const taskDivs = (obj) => {
       const index = obj.tasks.indexOf(task);
       obj.tasks.splice(index, 1);
       openProject(obj);
-    }
+    };
     taskTitle.appendChild(textTitle);
     taskCompleted.appendChild(textCompleted);
     taskCompleted.appendChild(deleteButton);
@@ -142,17 +139,17 @@ const taskDivs = (obj) => {
     taskArr.push(container);
   });
   return taskArr;
-}
+};
 
 const listProject = () => {
   const hash = JSON.parse(JSON.stringify(localStorage));
-  let projectArr = [];
-  for (let key in hash) {
+  const projectArr = [];
+  for (const key in hash) {
     const obj = JSON.parse(hash[key]);
     projectArr.push(printProjectList(obj, projectArr));
   }
   return projectArr;
-}
+};
 
 const printProjectList = (obj) => {
   const projectButton = document.createElement('button');
@@ -162,7 +159,7 @@ const printProjectList = (obj) => {
   projectButton.onclick = () => openProject(obj);
   index += 1;
   return projectButton;
-}
+};
 
 const openProject = (obj) => {
   const projectHeadDiv = document.getElementById('project-head-div');
@@ -180,25 +177,25 @@ const openProject = (obj) => {
   const projectTasks = document.getElementById('project-tasks');
   projectTasks.innerHTML = ' ';
 
-  tasksDivisions.forEach(div => {
+  tasksDivisions.forEach((div) => {
     projectTasks.appendChild(div);
-  })
+  });
   document.getElementById('add-task-form').innerHTML = ' ';
   const addTaskButton = document.createElement('button');
   const deleteButton = document.createElement('button');
   deleteButton.setAttribute('class', 'delete-button');
-  deleteButton.innerHTML = 'Delete ' + obj.title;
+  deleteButton.innerHTML = `Delete ${obj.title}`;
   deleteButton.onclick = () => {
     deleteProject(obj);
     displayInt();
-  }
+  };
   addTaskButton.innerHTML = 'Add a task';
   addTaskButton.onclick = () => addTaskForm(obj);
   const addTaskDiv = document.getElementById('project-add-task');
   addTaskDiv.innerHTML = ' ';
   addTaskDiv.appendChild(addTaskButton);
   projectHeadDiv.appendChild(deleteButton);
-}
+};
 
 const displayInt = () => {
   index = 0;
@@ -206,9 +203,9 @@ const displayInt = () => {
   const divs = listProject();
   const projectListDiv = document.getElementById('project-list');
   projectListDiv.innerHTML = ' ';
-  divs.forEach(project => {
+  divs.forEach((project) => {
     projectListDiv.appendChild(project);
-  })
-}
+  });
+};
 
 export { displayInt, addProject };
