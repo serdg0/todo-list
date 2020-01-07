@@ -7,7 +7,9 @@ We worked with OOP for Javascript, and practiced the single responsability appro
 ### Tools
 * [Node](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 * [webpack](https://webpack.js.org/)
+* Javascript
 * CSS
+
 ## Authors
 * [Sergio Diaz](https://github.com/serdg0)
 * [Eapen Zacharias](https://github.com/eapenzacharias)
