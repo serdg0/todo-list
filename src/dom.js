@@ -4,10 +4,14 @@ import task from './task';
 let index = 0;
 
 const addProject = (project) => {
-  project.index = index;
-  const projectText = JSON.stringify(project);
-  localStorage.setItem(index, projectText);
-  index += 1;
+  if (project.title != '') {
+    project.index = index;
+    const projectText = JSON.stringify(project);
+    localStorage.setItem(index, projectText);
+    index += 1;
+  } else {
+    return false;
+  }
 };
 
 const deleteProject = (project) => {
@@ -18,6 +22,7 @@ const addTaskForm = (project) => {
   const container = document.getElementById('add-task-form');
   container.innerHTML = '';
   const title = document.createElement('input');
+  title.required = true;
   const titleLabel = document.createElement('label');
   titleLabel.setAttribute('for', 'task-title');
   titleLabel.innerHTML = 'Task: ';
@@ -27,10 +32,36 @@ const addTaskForm = (project) => {
   const boxLabel = document.createElement('label');
   boxLabel.setAttribute('for', 'completed');
   boxLabel.innerHTML = 'Task done?';
+  const dueDate = document.createElement('input');
+  dueDate.setAttribute('id', 'datelab');
+  const dateLabel = document.createElement('label');
+  dateLabel.for = 'datelab';
+  dueDate.type = 'date';
+  dueDate.required = true;
+  const description = document.createElement('input');
+  const descriptionLabel = document.createElement('label');
+  description.id = 'descr';
+  descriptionLabel.for = 'descr';
+  description.type = 'text';
+  description.required = true;
+  descriptionLabel.innerHTML = 'Describe: ';
+  const priority = document.createElement('select');
+  priority.name = 'priority';
+  const high = document.createElement('option');
+  const low = document.createElement('option');
+  high.value = 'high';
+  high.innerHTML = 'High';
+  low.value = 'low';
+  low.innerHTML = 'Low';
+  priority.appendChild(high);
+  priority.appendChild(low);
+
+
   const submitButton = document.createElement('button');
   submitButton.innerHTML = 'Add';
   submitButton.onclick = () => {
-    addTaskToProj(project, title, checkBox);
+    console.log(dueDate);
+    addTaskToProj(project, title, checkBox, dueDate.value, description.value, priority.value);
     displayInt();
     container.innerHTML = ' ';
     openProject(JSON.parse(localStorage[project.index]));
@@ -39,6 +70,11 @@ const addTaskForm = (project) => {
   container.appendChild(title);
   container.appendChild(boxLabel);
   container.appendChild(checkBox);
+  container.appendChild(dateLabel);
+  container.appendChild(dueDate);
+  container.appendChild(descriptionLabel);
+  container.appendChild(description);
+  container.appendChild(priority);
   container.appendChild(submitButton);
   return container;
 };
@@ -97,9 +133,12 @@ const projectForm = () => {
   descDiv.appendChild(submitButton);
 };
 
-const addTaskToProj = (proj, input, checkbox) => project(proj).addTask(task({
+const addTaskToProj = (proj, input, checkbox, dueDate, description, priority) => project(proj).addTask(task({
   title: `${input.value}`,
   completed: checkbox.checked,
+  dueDate: dueDate,
+  description: description,
+  priority: priority,
 }));
 
 const taskDivs = (obj) => {
@@ -131,9 +170,33 @@ const taskDivs = (obj) => {
       obj.tasks.splice(index, 1);
       openProject(obj);
     };
+    const view = document.createElement('button');
+    view.innerHTML = 'View';
+    view.setAttribute('class', 'delete-button');
+    view.onclick = () => {
+      view.removeAttribute('onclick');
+      const viewDiv = document.createElement('div');
+      container.appendChild(viewDiv);
+      const taskDispDesc = document.createElement('p');
+      const taskDispDate = document.createElement('p');
+      const taskDispPriority = document.createElement('p');
+      taskDispDesc.innerHTML = `${task.description}`;
+      taskDispDate.innerHTML = `${task.dueDate}`;
+      taskDispPriority.innerHTML = `${task.priority}`;
+      const clearButton = document.createElement('button');
+      clearButton.innerHTML = 'Gotcha!';
+      viewDiv.appendChild(taskDispDesc);
+      viewDiv.appendChild(taskDispDate);
+      viewDiv.appendChild(taskDispPriority);
+      viewDiv.appendChild(clearButton);
+      clearButton.onclick = () => {
+        openProject(obj);
+      }
+    }
     taskTitle.appendChild(textTitle);
     taskCompleted.appendChild(textCompleted);
     taskCompleted.appendChild(deleteButton);
+    taskCompleted.appendChild(view);
     container.appendChild(taskTitle);
     container.appendChild(taskCompleted);
     taskArr.push(container);
