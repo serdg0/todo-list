@@ -133,13 +133,20 @@ const projectForm = () => {
   descDiv.appendChild(submitButton);
 };
 
-const addTaskToProj = (proj, input, checkbox, dueDate, description, priority) => project(proj).addTask(task({
-  title: `${input.value}`,
-  completed: checkbox.checked,
-  dueDate: dueDate,
-  description: description,
-  priority: priority,
-}));
+const addTaskToProj = (proj, input, checkbox, dueDate, description, priority) => {
+  if (input.value != ""){
+    project(proj).addTask(task({
+      title: `${input.value}`,
+      completed: checkbox.checked,
+      dueDate: dueDate,
+      description: description,
+      priority: priority,
+      }));
+  } else {
+    return false;
+  }
+
+}
 
 const taskDivs = (obj) => {
   const taskArr = [];
