@@ -46,10 +46,25 @@ html body .delete-button {
 
 html body .task-div {
   width: 100%;
-  height: 46px;
   margin: 2px 0;
   padding: 5px;
+  font-size: 18px;
+}
+
+html body .task-div div {
+  margin: 2px 0;
+  width: 100%;
+}
+
+html body .task-div input {
+  margin-right: 15px;
+}
+
+html body .task-div .task-title {
   font-size: 28px;
+}
+
+html body .task-div .task-head {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -58,8 +73,21 @@ html body .task-div {
           justify-content: space-between;
 }
 
-html body .task-div input {
-  margin-right: 15px;
+html body .task-div .task-head .btn {
+  width: 160px;
+  margin: 0 12px;
+  padding: 0;
+  height: 30px;
+}
+
+html body .task-div .view-button {
+  height: 30px;
+  margin: 2px 0 2px 15px;
+  font-size: 16px;
+  font-family: 'Orbitron', sans-serif;
+  background-color: #04a026;
+  color: #ffffff;
+  border: 1px solid #fff;
 }
 
 html body .project-header {

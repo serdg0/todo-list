@@ -134,14 +134,14 @@ const projectForm = () => {
 };
 
 const addTaskToProj = (proj, input, checkbox, dueDate, description, priority) => {
-  if (input.value != ""){
+  if (input.value != "") {
     project(proj).addTask(task({
       title: `${input.value}`,
       completed: checkbox.checked,
       dueDate: dueDate,
       description: description,
       priority: priority,
-      }));
+    }));
   } else {
     return false;
   }
@@ -153,13 +153,40 @@ const taskDivs = (obj) => {
   let counter = 0;
   obj.tasks.forEach((task) => {
     const container = document.createElement('div');
+    container.setAttribute('class', 'container');
+
+    const taskHead = document.createElement('div');
+    taskHead.setAttribute('class', 'container task-head');
+
     const taskTitle = document.createElement('span');
-    const taskCompleted = document.createElement('span');
-    taskCompleted.setAttribute('id', 'task-func');
+    taskTitle.setAttribute('class', 'task-title');
+
+    const taskDetails = document.createElement('span');
+
+    const viewDetails = document.createElement('div');
+    viewDetails.setAttribute('class', 'container');
+    viewDetails.setAttribute('id', `details-${task.title}`);
+
     const textTitle = document.createTextNode(`${task.title}`);
     const textCompleted = document.createElement('input');
+    const textLabel = document.createElement('label');
+
+    const taskDispDate = document.createElement('span');
+    taskDispDate.innerHTML = ` Due on: ${task.dueDate} `;
+
+    const taskDispPriority = document.createElement('button');
+    taskDispPriority.innerHTML = `Priority ${task.priority}`;
+    if (task.priority == 'high') {
+      taskDispPriority.setAttribute('class', 'btn btn-dark');
+    } else {
+      taskDispPriority.setAttribute('class', 'btn btn-light');
+    }
+
     textCompleted.setAttribute('type', 'checkbox');
     textCompleted.setAttribute('id', `${task.title}`);
+    textLabel.setAttribute('for', `${task.title}`);
+    textLabel.textContent = ' Completed: ';
+
     textCompleted.checked = task.completed;
     if (textCompleted.checked) {
       container.setAttribute('class', 'task-div bg-success text-white');
@@ -171,10 +198,12 @@ const taskDivs = (obj) => {
       localStorage.setItem(obj.index, JSON.stringify(obj));
       openProject(obj);
     };
+
     counter += 1;
     const deleteButton = document.createElement('button');
     deleteButton.innerHTML = 'Delete';
     deleteButton.setAttribute('class', 'delete-button');
+
     deleteButton.onclick = () => {
       const index = obj.tasks.indexOf(task);
       obj.tasks.splice(index, 1);
@@ -183,33 +212,35 @@ const taskDivs = (obj) => {
     };
     const view = document.createElement('button');
     view.innerHTML = 'View';
-    view.setAttribute('class', 'delete-button');
+    view.setAttribute('class', 'view-button');
     view.onclick = () => {
       view.removeAttribute('onclick');
-      const viewDiv = document.createElement('div');
-      container.appendChild(viewDiv);
+      const viewDiv = document.getElementById(`details-${task.title}`);
+      viewDiv.innerHTML = ' ';
       const taskDispDesc = document.createElement('p');
-      const taskDispDate = document.createElement('p');
-      const taskDispPriority = document.createElement('p');
       taskDispDesc.innerHTML = `${task.description}`;
-      taskDispDate.innerHTML = `${task.dueDate}`;
-      taskDispPriority.innerHTML = `${task.priority}`;
+
       const clearButton = document.createElement('button');
+      clearButton.setAttribute('class', 'btn btn-secondary');
       clearButton.innerHTML = 'Gotcha!';
+
       viewDiv.appendChild(taskDispDesc);
-      viewDiv.appendChild(taskDispDate);
-      viewDiv.appendChild(taskDispPriority);
       viewDiv.appendChild(clearButton);
       clearButton.onclick = () => {
         openProject(obj);
       }
     }
     taskTitle.appendChild(textTitle);
-    taskCompleted.appendChild(textCompleted);
-    taskCompleted.appendChild(deleteButton);
-    taskCompleted.appendChild(view);
-    container.appendChild(taskTitle);
-    container.appendChild(taskCompleted);
+    taskDetails.appendChild(taskDispDate);
+    taskDetails.appendChild(textLabel);
+    taskDetails.appendChild(textCompleted);
+    taskDetails.appendChild(taskDispPriority);
+    taskDetails.appendChild(deleteButton);
+    taskDetails.appendChild(view);
+    taskHead.appendChild(taskTitle);
+    taskHead.appendChild(taskDetails)
+    container.appendChild(taskHead);
+    container.appendChild(viewDetails);
     taskArr.push(container);
   });
   return taskArr;
