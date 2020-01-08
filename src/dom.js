@@ -150,6 +150,7 @@ const addTaskToProj = (proj, input, checkbox, dueDate, description, priority) =>
 
 const taskDivs = (obj) => {
   const taskArr = [];
+  let counter = 0;
   obj.tasks.forEach((task) => {
     const container = document.createElement('div');
     const taskTitle = document.createElement('span');
@@ -167,14 +168,17 @@ const taskDivs = (obj) => {
     }
     textCompleted.onclick = () => {
       task.completed = !task.completed;
+      localStorage.setItem(obj.index, JSON.stringify(obj));
       openProject(obj);
     };
+    counter += 1;
     const deleteButton = document.createElement('button');
     deleteButton.innerHTML = 'Delete';
     deleteButton.setAttribute('class', 'delete-button');
     deleteButton.onclick = () => {
       const index = obj.tasks.indexOf(task);
       obj.tasks.splice(index, 1);
+      localStorage.setItem(obj.index, JSON.stringify(obj));
       openProject(obj);
     };
     const view = document.createElement('button');
