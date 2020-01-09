@@ -1,21 +1,19 @@
 const task = (args) => {
   const { title } = args;
-  const completedFun = () => {
-      return args.hasOwnProperty('completed') ? args.completed : false
-    }
-    // const checkboxCheck = () => {
-    //     const textCompleted = document.getElementById(`${task.title}`);
-    //     if (textCompleted.checked !== task.completed) {
-    //         task.completed = textCompleted.checked;
-    //       }
-    // }
+  const completedFun = () => (args.hasOwnProperty('completed') ? args.completed : false);
 
   const completed = completedFun();
+  const { description } = args;
+  const { dueDate } = args;
+  const { priority } = args;
 
   return {
     title,
     completed,
-  }
-}
+    description,
+    dueDate,
+    priority
+  };
+};
 
-export default task
+export default task;

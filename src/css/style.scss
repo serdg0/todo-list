@@ -25,14 +25,49 @@ html {
         margin: 0 0;
       }
     }
+    .delete-button {
+      height: 30px;
+      margin: 2px 0;
+      font-size: 16px;
+      font-family: 'Orbitron', sans-serif;
+      background: none;
+      color: #d62000;
+      border: 1px solid #d62000;
+    }
     .task-div {
       width: 100%;
-      height: 36px;
       margin: 2px 0;
       padding: 5px;
-      font-size: 20px;
-      display: flex;
-      justify-content: space-between;
+      font-size: 18px;
+      div {
+        margin: 2px 0;
+        width: 100%;
+      }
+      input {
+        margin-right: 15px;
+      }
+      .task-title {
+        font-size: 28px;
+      }
+      .task-head {
+        display: flex;
+        justify-content: space-between;
+        .btn {
+          width: 160px;
+          margin: 0 12px;
+          padding: 0;
+          height: 30px;
+        }
+      }
+      .view-button {
+        height: 30px;
+        margin: 2px 0 2px 15px;
+        font-size: 16px;
+        font-family: 'Orbitron', sans-serif;
+        background-color: #04a026;
+        color: #ffffff;
+        border: 1px solid #fff;
+      }
     }
     .project-header {
       margin-top: 22px;
@@ -55,14 +90,19 @@ html {
     .project-nav {
       background-color: #0f0f0f;
       height: 100%;
-      .project-button {
+      button {
         width: 100%;
         height: 40px;
         margin: 2px 0;
         font-family: 'Orbitron', sans-serif;
-        background-color: #04a026;
         color: #fff;
         border: 0;
+      }
+      .project-button {
+        background-color: #04a026;
+      }
+      .clear-all {
+        background-color: #ce2f2f;
       }
     }
   }

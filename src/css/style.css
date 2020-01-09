@@ -34,18 +34,60 @@ html body .container .col-10 {
   margin: 0 0;
 }
 
+html body .delete-button {
+  height: 30px;
+  margin: 2px 0;
+  font-size: 16px;
+  font-family: 'Orbitron', sans-serif;
+  background: none;
+  color: #d62000;
+  border: 1px solid #d62000;
+}
+
 html body .task-div {
   width: 100%;
-  height: 36px;
   margin: 2px 0;
   padding: 5px;
-  font-size: 20px;
+  font-size: 18px;
+}
+
+html body .task-div div {
+  margin: 2px 0;
+  width: 100%;
+}
+
+html body .task-div input {
+  margin-right: 15px;
+}
+
+html body .task-div .task-title {
+  font-size: 28px;
+}
+
+html body .task-div .task-head {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+}
+
+html body .task-div .task-head .btn {
+  width: 160px;
+  margin: 0 12px;
+  padding: 0;
+  height: 30px;
+}
+
+html body .task-div .view-button {
+  height: 30px;
+  margin: 2px 0 2px 15px;
+  font-size: 16px;
+  font-family: 'Orbitron', sans-serif;
+  background-color: #04a026;
+  color: #ffffff;
+  border: 1px solid #fff;
 }
 
 html body .project-header {
@@ -74,13 +116,20 @@ html body .project-nav {
   height: 100%;
 }
 
-html body .project-nav .project-button {
+html body .project-nav button {
   width: 100%;
   height: 40px;
   margin: 2px 0;
   font-family: 'Orbitron', sans-serif;
-  background-color: #04a026;
   color: #fff;
   border: 0;
+}
+
+html body .project-nav .project-button {
+  background-color: #04a026;
+}
+
+html body .project-nav .clear-all {
+  background-color: #ce2f2f;
 }
 /*# sourceMappingURL=style.css.map */

@@ -1,48 +1,82 @@
 import project from './project';
 import task from './task';
-//display all project, display tasks, add new project button, add delete button, project complete checkbox
-//task complete checkbox, form for project, form for task.
-var index = 0;
+
+let index = 0;
 
 const addProject = (project) => {
-  project.index = index;
-  const projectText = JSON.stringify(project);
-  localStorage.setItem(index, projectText);
-  index += 1;
-}
+  if (project.title != '') {
+    project.index = index;
+    const projectText = JSON.stringify(project);
+    localStorage.setItem(index, projectText);
+    index += 1;
+  } else {
+    return false;
+  }
+};
 
 const deleteProject = (project) => {
-  localStorage.removeItem(project.index); 
-}
+  localStorage.removeItem(project.index);
+};
 
 const addTaskForm = (project) => {
-  const container = document.getElementById(`add-task-form`);
+  const container = document.getElementById('add-task-form');
   container.innerHTML = '';
   const title = document.createElement('input');
+  title.required = true;
   const titleLabel = document.createElement('label');
   titleLabel.setAttribute('for', 'task-title');
   titleLabel.innerHTML = 'Task: ';
   const checkBox = document.createElement('input');
-  checkBox.type = "checkbox";
+  checkBox.type = 'checkbox';
   checkBox.setAttribute('id', 'completed');
   const boxLabel = document.createElement('label');
   boxLabel.setAttribute('for', 'completed');
   boxLabel.innerHTML = 'Task done?';
+  const dueDate = document.createElement('input');
+  dueDate.setAttribute('id', 'datelab');
+  const dateLabel = document.createElement('label');
+  dateLabel.for = 'datelab';
+  dueDate.type = 'date';
+  dueDate.required = true;
+  const description = document.createElement('input');
+  const descriptionLabel = document.createElement('label');
+  description.id = 'descr';
+  descriptionLabel.for = 'descr';
+  description.type = 'text';
+  description.required = true;
+  descriptionLabel.innerHTML = 'Describe: ';
+  const priority = document.createElement('select');
+  priority.name = 'priority';
+  const high = document.createElement('option');
+  const low = document.createElement('option');
+  high.value = 'high';
+  high.innerHTML = 'High';
+  low.value = 'low';
+  low.innerHTML = 'Low';
+  priority.appendChild(high);
+  priority.appendChild(low);
+
+
   const submitButton = document.createElement('button');
   submitButton.innerHTML = 'Add';
   submitButton.onclick = () => {
-    addTaskToProj(project, title, checkBox);
+    addTaskToProj(project, title, checkBox, dueDate.value, description.value, priority.value);
     displayInt();
     container.innerHTML = ' ';
     openProject(JSON.parse(localStorage[project.index]));
-  }
+  };
   container.appendChild(titleLabel);
   container.appendChild(title);
   container.appendChild(boxLabel);
   container.appendChild(checkBox);
+  container.appendChild(dateLabel);
+  container.appendChild(dueDate);
+  container.appendChild(descriptionLabel);
+  container.appendChild(description);
+  container.appendChild(priority);
   container.appendChild(submitButton);
-  return container
-}
+  return container;
+};
 
 const addProjectNav = () => {
   const nav = document.getElementById('add-project-div');
@@ -54,9 +88,17 @@ const addProjectNav = () => {
     document.getElementById('project-tasks').innerHTML = ' ';
     document.getElementById('project-add-task').innerHTML = ' ';
     projectForm();
-  }
+  };
+  const clear = document.createElement('button');
+  clear.setAttribute('class', 'clear-all');
+  clear.innerHTML = 'Clear All';
+  clear.onclick = () => {
+    localStorage.clear();
+    displayInt();
+  };
   nav.appendChild(newProject);
-}
+  nav.appendChild(clear);
+};
 
 const projectForm = () => {
   const titleDiv = document.getElementById('project-head-div');
@@ -68,7 +110,7 @@ const projectForm = () => {
   title.placeholder = 'Project Name';
   const description = document.createElement('textarea');
   description.setAttribute('rows', '4');
-  description.setAttribute('class', 'input desc')
+  description.setAttribute('class', 'input desc');
   description.placeholder = 'Project Description';
   const completed = document.createElement('input');
   completed.setAttribute('type', 'checkbox');
@@ -82,32 +124,68 @@ const projectForm = () => {
       completed: completed.checked,
     }));
     displayInt();
-  }
+  };
 
   titleDiv.appendChild(title);
   descDiv.appendChild(description);
   descDiv.appendChild(completed);
   descDiv.appendChild(submitButton);
+};
 
-}
+const addTaskToProj = (proj, input, checkbox, dueDate, description, priority) => {
+  if (input.value != "") {
+    project(proj).addTask(task({
+      title: `${input.value}`,
+      completed: checkbox.checked,
+      dueDate: dueDate,
+      description: description,
+      priority: priority,
+    }));
+  } else {
+    return false;
+  }
 
-const addTaskToProj = (proj, input, checkbox) => {
-  return project(proj).addTask(task({
-    title: `${input.value}`,
-    completed: checkbox.checked,
-  }));
 }
 
 const taskDivs = (obj) => {
-  let taskArr = [];
-  obj.tasks.forEach(task => {
+  const taskArr = [];
+  let counter = 0;
+  obj.tasks.forEach((task) => {
     const container = document.createElement('div');
+    container.setAttribute('class', 'container');
+
+    const taskHead = document.createElement('div');
+    taskHead.setAttribute('class', 'container task-head');
+
     const taskTitle = document.createElement('span');
-    const taskCompleted = document.createElement('span');
+    taskTitle.setAttribute('class', 'task-title');
+
+    const taskDetails = document.createElement('span');
+
+    const viewDetails = document.createElement('div');
+    viewDetails.setAttribute('class', 'container');
+    viewDetails.setAttribute('id', `details-${task.title}`);
+
     const textTitle = document.createTextNode(`${task.title}`);
     const textCompleted = document.createElement('input');
+    const textLabel = document.createElement('label');
+
+    const taskDispDate = document.createElement('span');
+    taskDispDate.innerHTML = ` Due on: ${task.dueDate} `;
+
+    const taskDispPriority = document.createElement('button');
+    taskDispPriority.innerHTML = `Priority ${task.priority}`;
+    if (task.priority == 'high') {
+      taskDispPriority.setAttribute('class', 'btn btn-dark');
+    } else {
+      taskDispPriority.setAttribute('class', 'btn btn-light');
+    }
+
     textCompleted.setAttribute('type', 'checkbox');
     textCompleted.setAttribute('id', `${task.title}`);
+    textLabel.setAttribute('for', `${task.title}`);
+    textLabel.textContent = ' Completed: ';
+
     textCompleted.checked = task.completed;
     if (textCompleted.checked) {
       container.setAttribute('class', 'task-div bg-success text-white');
@@ -116,71 +194,66 @@ const taskDivs = (obj) => {
     }
     textCompleted.onclick = () => {
       task.completed = !task.completed;
+      localStorage.setItem(obj.index, JSON.stringify(obj));
       openProject(obj);
-    }
+    };
+
+    counter += 1;
     const deleteButton = document.createElement('button');
     deleteButton.innerHTML = 'Delete';
+    deleteButton.setAttribute('class', 'delete-button');
+
     deleteButton.onclick = () => {
       const index = obj.tasks.indexOf(task);
       obj.tasks.splice(index, 1);
+      localStorage.setItem(obj.index, JSON.stringify(obj));
       openProject(obj);
+    };
+    const view = document.createElement('button');
+    view.innerHTML = 'View';
+    view.setAttribute('class', 'view-button');
+    view.onclick = () => {
+      view.removeAttribute('onclick');
+      const viewDiv = document.getElementById(`details-${task.title}`);
+      viewDiv.innerHTML = ' ';
+      const taskDispDesc = document.createElement('p');
+      taskDispDesc.innerHTML = `${task.description}`;
+
+      const clearButton = document.createElement('button');
+      clearButton.setAttribute('class', 'btn btn-secondary');
+      clearButton.innerHTML = 'Gotcha!';
+
+      viewDiv.appendChild(taskDispDesc);
+      viewDiv.appendChild(clearButton);
+      clearButton.onclick = () => {
+        openProject(obj);
+      }
     }
     taskTitle.appendChild(textTitle);
-    taskCompleted.appendChild(textCompleted);
-    container.appendChild(taskTitle);
-    container.appendChild(taskCompleted);
-    container.appendChild(deleteButton);
+    taskDetails.appendChild(taskDispDate);
+    taskDetails.appendChild(textLabel);
+    taskDetails.appendChild(textCompleted);
+    taskDetails.appendChild(taskDispPriority);
+    taskDetails.appendChild(deleteButton);
+    taskDetails.appendChild(view);
+    taskHead.appendChild(taskTitle);
+    taskHead.appendChild(taskDetails)
+    container.appendChild(taskHead);
+    container.appendChild(viewDetails);
     taskArr.push(container);
   });
   return taskArr;
-}
-
-const printProject = (obj) => {
-  const projectDiv = document.createElement('div');
-  projectDiv.setAttribute('id', `${obj.title}`)
-  const projectTitle = document.createElement('div');
-  const projectDescription = document.createElement('div');
-  const textTitle = document.createTextNode(`TITLE: ${obj.title}`);
-  const textDescription = document.createTextNode(`DESCRIPTION: ${obj.description}`);
-  const tasksDivisions = taskDivs(obj);
-  const addTaskButton = document.createElement('button');
-  addTaskButton.innerHTML = 'Add a task';
-  addTaskButton.onclick = () => addTaskForm(obj);
-  projectTitle.appendChild(textTitle);
-  projectDescription.appendChild(textDescription);
-  projectDiv.appendChild(projectTitle);
-  projectDiv.appendChild(projectDescription);
-  const formDiv = document.createElement('div');
-  formDiv.setAttribute('id', `${obj.index}`)
-
-  tasksDivisions.forEach(div => {
-    projectDiv.appendChild(div);
-  })
-
-  index += 1;
-  projectDiv.appendChild(addTaskButton);
-  project - dec
-}
-
-const projectDivs = () => {
-  const hash = JSON.parse(JSON.stringify(localStorage));
-  let projectArr = [];
-  for (let key in hash) {
-    const obj = JSON.parse(hash[key]);
-    projectArr.push(printProject(obj, projectArr));
-  }
-  return projectArr;
-}
+};
 
 const listProject = () => {
   const hash = JSON.parse(JSON.stringify(localStorage));
-  let projectArr = [];
-  for (let key in hash) {
+  const projectArr = [];
+  for (const key in hash) {
     const obj = JSON.parse(hash[key]);
     projectArr.push(printProjectList(obj, projectArr));
   }
   return projectArr;
-}
+};
 
 const printProjectList = (obj) => {
   const projectButton = document.createElement('button');
@@ -190,7 +263,7 @@ const printProjectList = (obj) => {
   projectButton.onclick = () => openProject(obj);
   index += 1;
   return projectButton;
-}
+};
 
 const openProject = (obj) => {
   const projectHeadDiv = document.getElementById('project-head-div');
@@ -208,24 +281,25 @@ const openProject = (obj) => {
   const projectTasks = document.getElementById('project-tasks');
   projectTasks.innerHTML = ' ';
 
-  tasksDivisions.forEach(div => {
+  tasksDivisions.forEach((div) => {
     projectTasks.appendChild(div);
-  })
+  });
   document.getElementById('add-task-form').innerHTML = ' ';
   const addTaskButton = document.createElement('button');
   const deleteButton = document.createElement('button');
-  deleteButton.innerHTML = 'Delete ' + obj.title;
+  deleteButton.setAttribute('class', 'delete-button');
+  deleteButton.innerHTML = `Delete ${obj.title}`;
   deleteButton.onclick = () => {
     deleteProject(obj);
     displayInt();
-  }
+  };
   addTaskButton.innerHTML = 'Add a task';
   addTaskButton.onclick = () => addTaskForm(obj);
   const addTaskDiv = document.getElementById('project-add-task');
   addTaskDiv.innerHTML = ' ';
   addTaskDiv.appendChild(addTaskButton);
   projectHeadDiv.appendChild(deleteButton);
-}
+};
 
 const displayInt = () => {
   index = 0;
@@ -233,9 +307,9 @@ const displayInt = () => {
   const divs = listProject();
   const projectListDiv = document.getElementById('project-list');
   projectListDiv.innerHTML = ' ';
-  divs.forEach(project => {
+  divs.forEach((project) => {
     projectListDiv.appendChild(project);
-  })
-}
+  });
+};
 
 export { displayInt, addProject };
