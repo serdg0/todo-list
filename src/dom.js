@@ -60,7 +60,6 @@ const addTaskForm = (project) => {
   const submitButton = document.createElement('button');
   submitButton.innerHTML = 'Add';
   submitButton.onclick = () => {
-    console.log(dueDate);
     addTaskToProj(project, title, checkBox, dueDate.value, description.value, priority.value);
     displayInt();
     container.innerHTML = ' ';
