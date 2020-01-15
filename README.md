@@ -3,6 +3,7 @@ Task from [The Odin Project](https://www.theodinproject.com/courses/javascript/l
 
 We worked with OOP for Javascript, and practiced the single responsability approach.
 
+Click here for a [live](https://serdg0.github.io/todo-list/) version.
 
 ### Tools
 * [Node](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
